@@ -248,6 +248,95 @@
             ) 12;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
+
+        /* TV layout keeps the canvas and instruments inside the visible area. */
+        button:focus-visible, .icon-btn:focus-visible {
+            outline: 3px solid #0ea5e9;
+            outline-offset: 3px;
+        }
+        .rig-action-label { display: none; }
+
+        @media (orientation: landscape) and (min-width: 1000px) and (min-height: 560px) {
+            body.caution-border {
+                background: radial-gradient(ellipse at top, #263747, #101820 72%);
+                border: 0;
+                box-shadow: none;
+            }
+            #main-game-ui { padding: 2.5vh 2.5vw; gap: 12px; }
+            #splash-screen { padding: 3vh 3vw; }
+            #splash-screen > .panel-metal {
+                background: #f8fafc;
+                border: 1px solid #94a3b8;
+                border-radius: 16px;
+                box-shadow: 0 16px 44px #0f172a45;
+            }
+            #canvas-area {
+                background: #18232e;
+                border: 1px solid #516273;
+                border-radius: 12px;
+                box-shadow: none;
+            }
+            #canvas-wrapper { border: 1px solid #475569; border-radius: 8px; }
+            #canvas-wrapper::before { display: none; }
+            #ui-controls-wrapper-main {
+                background: #18232e;
+                border: 1px solid #516273;
+                border-radius: 12px;
+                box-shadow: none;
+                margin-top: 0;
+                padding: 10px;
+            }
+            #ui-controls-wrapper-main .screw,
+            #ui-controls-wrapper-main .vent-strip { display: none; }
+            #ui-controls-wrapper-main > .grid { margin-bottom: 0; gap: 10px; }
+            #ui-controls-wrapper-main .plastic-module {
+                background: #f1f5f9;
+                border: 1px solid #94a3b8;
+                border-radius: 8px;
+                box-shadow: none;
+                padding: 10px;
+            }
+            #ui-clock-wrapper h3, #ui-telemetry-wrapper h3 {
+                font-size: clamp(13px, 1.05vw, 20px);
+                letter-spacing: .06em;
+            }
+            #ui-telemetry-wrapper { max-width: 220px; }
+            #ui-telemetry-wrapper .panel-inset { height: auto; min-height: 84px; }
+            #ui-telemetry-wrapper [data-i18n^="lbl-"] {
+                color: #334155;
+                font-size: clamp(11px, .9vw, 16px);
+                letter-spacing: .04em;
+            }
+            #hud-depth, #hud-pitch, #hud-target, #time-display, #display-rod-left {
+                font-size: clamp(15px, 1.2vw, 24px);
+                white-space: nowrap;
+            }
+            #hud-target, #time-display, #display-rod-left { color: #166534; }
+            #hud-pitch { color: #9a3412; }
+            #btn-data-log { margin-bottom: 6px; font-size: 14px; }
+            #zoom-controls button, #ui-module-2 .icon-btn {
+                min-width: 38px;
+                min-height: 38px;
+            }
+            #ui-module-3 .rig-actions > * + * { margin-left: 8px; }
+            #ui-module-3 .rig-action {
+                width: clamp(76px, 7.6vw, 138px);
+                height: auto;
+                min-height: 57px;
+                flex-direction: column;
+                gap: 4px;
+                padding: 6px 4px;
+                border-radius: 10px;
+            }
+            #ui-module-3 .rig-action svg { width: 23px; height: 23px; }
+            .rig-action-label {
+                display: block;
+                font-size: clamp(11px, 1vw, 19px);
+                font-weight: 700;
+                line-height: 1.05;
+                white-space: normal;
+            }
+        }
     </style>
 </head>
 <body class="h-screen w-screen m-0 p-0 flex flex-col overflow-hidden text-center select-none light-mode caution-border">
@@ -605,23 +694,26 @@
                             </div>
                         </div>
 
-                        <div class="flex space-x-4 lg:space-x-6 justify-center w-full z-10 mt-1">
+                        <div class="rig-actions flex space-x-4 lg:space-x-6 justify-center w-full z-10 mt-1">
                             <!-- Gris (Pull) -->
-                            <button class="btn-action continuous-btn btn-circle w-16 h-16 bg-gradient-to-b from-[#94a3b8] to-[#475569] border-[#334155] shadow-[0_4px_0_#334155,0_6px_6px_rgba(0,0,0,0.15)] flex items-center justify-center text-white"
+                            <button class="btn-action continuous-btn btn-circle rig-action w-16 h-16 bg-gradient-to-b from-[#94a3b8] to-[#475569] border-[#334155] shadow-[0_4px_0_#334155,0_6px_6px_rgba(0,0,0,0.15)] flex items-center justify-center text-white"
                                 onpointerdown="window.startContinuous('pull')" onpointerup="window.stopContinuous()" onpointerleave="window.stopContinuous()" onpointercancel="window.stopContinuous()" oncontextmenu="return false;" title="PULL BACK">
                                 <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                                <span class="rig-action-label" data-i18n="rig-pull">PULL BACK</span>
                             </button>
 
                             <!-- Cafe (Drill/Rotate) -->
-                            <button class="btn-action continuous-btn btn-circle w-16 h-16 bg-gradient-to-b from-[#92400e] to-[#713f12] border-[#451a03] shadow-[0_4px_0_#451a03,0_6px_6px_rgba(0,0,0,0.15)] flex items-center justify-center text-white"
+                            <button class="btn-action continuous-btn btn-circle rig-action w-16 h-16 bg-gradient-to-b from-[#92400e] to-[#713f12] border-[#451a03] shadow-[0_4px_0_#451a03,0_6px_6px_rgba(0,0,0,0.15)] flex items-center justify-center text-white"
                                 onpointerdown="window.startContinuous('drill')" onpointerup="window.stopContinuous()" onpointerleave="window.stopContinuous()" onpointercancel="window.stopContinuous()" oncontextmenu="return false;" title="ROTATE / STRAIGHT">
                                 <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                                <span class="rig-action-label" data-i18n="rig-drill">ROTATE / STRAIGHT</span>
                             </button>
                             
                             <!-- Azul (Steer/Push) -->
-                            <button class="btn-action continuous-btn btn-circle w-16 h-16 bg-gradient-to-b from-[#0ea5e9] to-[#0284c7] border-[#075985] shadow-[0_4px_0_#075985,0_6px_6px_rgba(0,0,0,0.15)] flex items-center justify-center text-white"
+                            <button class="btn-action continuous-btn btn-circle rig-action w-16 h-16 bg-gradient-to-b from-[#0ea5e9] to-[#0284c7] border-[#075985] shadow-[0_4px_0_#075985,0_6px_6px_rgba(0,0,0,0.15)] flex items-center justify-center text-white"
                                 onpointerdown="window.startContinuous('steer')" onpointerup="window.stopContinuous()" onpointerleave="window.stopContinuous()" onpointercancel="window.stopContinuous()" oncontextmenu="return false;" title="STEER">
                                 <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                <span class="rig-action-label" data-i18n="rig-steer">STEER</span>
                             </button>
                         </div>
                     </div>
@@ -841,6 +933,7 @@
         
         window.translations = {
             en: {
+                'rig-pull': 'PULL BACK', 'rig-drill': 'ROTATE / STRAIGHT', 'rig-steer': 'STEER',
                 "init-title": "SYSTEM BOOT",
                 "init-sub": "Initialize Hydraulic Systems...",
                 "title-sub": "Heavy Drilling OS v5.0 // Auth: J. Sarracent",
@@ -942,6 +1035,7 @@
                 "click-to-review": "[ CLICK OUTSIDE TO REVIEW BOARD ]"
             },
             es: {
+                'rig-pull': 'RETROCEDER', 'rig-drill': 'GIRAR / RECTO', 'rig-steer': 'DIRIGIR',
                 "init-title": "INICIO DEL SISTEMA",
                 "init-sub": "Inicializando Sistemas Hidráulicos...",
                 "title-sub": "SO de Perforación Pesada v5.0 // Aut: J. Sarracent",
@@ -2879,10 +2973,6 @@
         
         setInterval(() => { const rstBtn = document.getElementById('btn-rst-main'); if (!rstBtn) return; const actionBtn = document.querySelector('.btn-action'); if (actionBtn && actionBtn.disabled && !isAnimating && !state.gameOver && !state.isChangingRod) rstBtn.classList.add('animate-pulse', 'bg-[var(--industrial-red)]', 'border-red-800'); else rstBtn.classList.remove('animate-pulse', 'bg-[var(--industrial-red)]', 'border-red-800'); }, 500);
 
-        window.applyTranslations(); window.initFirebase();
-    </script>
-</body>
-</html>
         window.applyTranslations(); window.initFirebase();
     </script>
 </body>
